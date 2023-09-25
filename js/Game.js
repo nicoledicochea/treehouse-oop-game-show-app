@@ -92,6 +92,7 @@ class Game {
     }
 
     handleInteraction(e) {
+        e.target.disabled = true
         if(!this.activePhrase.checkLetter(e)) {
             e.target.classList.add('wrong')
             this.removeLife()
@@ -141,6 +142,32 @@ class Game {
             gameOverMessage.innerText = 'You Lose. Better luck next time!'
             overlay.classList.add('lose')
         }
+        const keys = document.querySelectorAll('.key')
+        keys.forEach(key => {
+            key.classList.remove('chosen')
+            key.classList.remove('wrong')
+            key.disabled = false
+        })
+        const phraseList = document.querySelector('#phrase ul')
+        while(phraseList.hasElementChildNodes) {
+            phraseList.firstElementChild.remove()
+        }
+
+        const lostHearts = document.querySelectorAll(`img`)
+        console.log(lostHearts)
+        lostHearts.forEach(heart => {
+            heart.src = './images/liveHeart.png'
+            heart.alt = 'Heart Icon'
+            console.log(heart) 
+        })
+
+        // const hearts = document.querySelectorAll('#scoreboard img')
+        // hearts.forEach(heart => {
+        //     heart.src = './images/liveHeart.png'
+        //     heart.alt = 'Heart Icon'
+        //     console.log(heart)
+        // })
+        // console.log(hearts)
     }
 
 }

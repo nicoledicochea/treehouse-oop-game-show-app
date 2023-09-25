@@ -16,6 +16,7 @@
  */
 
 let game
+
 const startButton = document.querySelector('#btn__reset')
 
 startButton.addEventListener('click', (e) => {
@@ -30,3 +31,4 @@ keys.addEventListener('click', (e) => {
         game.handleInteraction(e)
     }
 })
+
