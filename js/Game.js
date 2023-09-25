@@ -35,11 +35,115 @@
             * increment the missed property
             * if there are 5 missed guesses,
                 * call gameOver()
+
+            // select all lis with src liveheart
+            // then choose last li of that section
+            // change src to lostHeart.png
+        
         * checkForWin()
             * checks to see if the player guessed all of the letters in the active phrase
+            * 
+            *         // let win = false
+            // const hiddenLetters = document.querySelectorAll('#hide')
+            // for(let i = 0; i < hiddenLetters.length; i++) {
+            //     if (this.activePhrase.includes(letter.innerText)) {
+            //         win = false
+            //         break
+            //     } else {
+            //         win = true
+            //     }
+            // }
+            // return win
+            // return true
+
+        // if no more keys contain any of the letters in phrase, then it's a win
         * gameOver()
             * displays original start screen overlay
             * depending on outcome of game replaces h1 'start' class with:
             * if win: 'win'
             * if lose: 'lose'
  */
+
+class Game {
+    constructor(missed, phrases, activePhrase) {
+        this.missed = 0
+        this.phrases = [
+            new Phrase('let it flow'),
+            new Phrase('paint the town red'),
+            new Phrase('motion sickness'),
+            new Phrase('blood in the wine'),
+            new Phrase('running with wolves'),
+            new Phrase('the boy who cried wolf'),
+            new Phrase('once upon a dream'),
+            new Phrase('all the things she said')
+        ]
+        this.activePhrase = null
+    }
+
+    startGame() {
+        const overlay = document.querySelector('#overlay')
+        overlay.style.display = 'none'
+        this.activePhrase = this.getRandomPhrase()
+        this.activePhrase.addPhraseToDisplay()
+    }
+
+    getRandomPhrase(){
+        return this.phrases[Math.floor(Math.random() * this.phrases.length)]
+    }
+
+    handleInteraction(e) {
+        if(!this.activePhrase.checkLetter(e)) {
+            e.target.classList.add('wrong')
+            this.removeLife()
+        } else {
+            e.target.classList.add('chosen')
+            this.activePhrase.showMatchedLetter(e)
+            if(this.checkForWin()) {
+                this.gameOver()
+            }
+        }
+    }
+
+    removeLife() {
+        this.missed++
+        if (this.missed === 5) {
+            this.gameOver()
+        }
+        const liveHearts = document.querySelectorAll(`[src='images/liveHeart.png']`)
+        const lastHeart = liveHearts[liveHearts.length - 1]
+        lastHeart.src = './images/lostHeart.png'
+        lastHeart.alt = 'Lost Heart Icon'
+    }
+
+    checkForWin() {
+        let win = true
+        const keys = document.querySelectorAll('.key')
+        keys.forEach(key => {
+            if (!key.classList.contains('wrong') && !key.classList.contains('chosen')) {
+                if (this.activePhrase.phrase.includes(key.innerText)) {
+                    win = false
+                    return win
+                }
+            }
+        })
+        return win
+    }
+
+    gameOver() {
+        const overlay = document.querySelector('#overlay')
+        overlay.style.display = 'flex'
+        overlay.classList.remove('start')
+        const gameOverMessage = document.querySelector('#game-over-message')
+        if (this.checkForWin()) {
+            gameOverMessage.innerText = 'You Won!'
+            overlay.classList.add('win')
+        } else {
+            gameOverMessage.innerText = 'You Lose. Better luck next time!'
+            overlay.classList.add('lose')
+        }
+    }
+
+}
+
+
+// game.startGame()

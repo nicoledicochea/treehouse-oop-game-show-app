@@ -6,9 +6,27 @@
         * starts game by calling startGame()
     * add click event listener to each onscreen keyboard button
         * calls handleInteraction() on Game object
+        * 
+        * 
     * reset gameboard between games
         * remove all li elements from the Phrase ul element
         * enable all keyboard buttons
         * update each key CSS class / remove 'chosen' 'wrong'
         * reset heartimages => change back to liveHeart.png
  */
+
+let game
+const startButton = document.querySelector('#btn__reset')
+
+startButton.addEventListener('click', (e) => {
+    game = new Game()
+    game.startGame()
+})
+
+const keys = document.querySelector('#qwerty')
+
+keys.addEventListener('click', (e) => {
+    if(e.target.tagName === 'BUTTON') {
+        game.handleInteraction(e)
+    }
+})
