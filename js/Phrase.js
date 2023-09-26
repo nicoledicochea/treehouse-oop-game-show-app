@@ -50,17 +50,24 @@ class Phrase {
     }
 
     checkLetter(e) {
-        return this.phrase.includes((e.target.innerText))
+        return this.phrase.includes((e.target.innerText)) || this.phrase.includes((e.key))
     }
 
     showMatchedLetter(e) {
-        const guessedLetter = document.querySelectorAll(`.${e.target.innerText}`)
-        guessedLetter.forEach(guess => {
-            guess.classList.remove('hide')
-            guess.classList.add('show')
-
-
-        })
+        let guessedLetter
+        if(e.target.tagName === 'BUTTON') {
+            guessedLetter = document.querySelectorAll(`.${e.target.innerText}`) 
+            guessedLetter.forEach(guess => {
+                guess.classList.remove('hide')
+                guess.classList.add('show')
+            })
+        } else {
+            guessedLetter = document.querySelectorAll(`.${e.key}`) 
+            guessedLetter.forEach(guess => {
+                guess.classList.remove('hide')
+                guess.classList.add('show')
+            })
+        }
     }
 }
 

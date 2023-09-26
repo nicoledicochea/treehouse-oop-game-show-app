@@ -32,3 +32,11 @@ keys.addEventListener('click', (e) => {
     }
 })
 
+addEventListener('keydown', (e) => {
+    const keys = document.querySelectorAll('.key')
+    keys.forEach(key => {
+        if (!key.classList.contains('wrong') && key.innerText === e.key) {
+            game.handleInteraction(e)
+        }
+    })
+})

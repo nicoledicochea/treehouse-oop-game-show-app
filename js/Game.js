@@ -93,11 +93,30 @@ class Game {
 
     handleInteraction(e) {
         e.target.disabled = true
+        // }
         if(!this.activePhrase.checkLetter(e)) {
-            e.target.classList.add('wrong')
+            if(e.target.tagName === 'BUTTON') {
+                e.target.classList.add('wrong')
+            } else {
+                const keys = document.querySelectorAll(`.key`)
+                keys.forEach(key => {
+                    if (key.innerText === e.key) {
+                        key.classList.add('wrong')
+                    }
+                }) 
+            }
             this.removeLife()
         } else {
-            e.target.classList.add('chosen')
+            if(e.target.tagName === 'BUTTON') {
+                e.target.classList.add('chosen')
+            } else {
+                const keys = document.querySelectorAll(`.key`)
+                keys.forEach(key => {
+                    if (key.innerText === e.key) {
+                        key.classList.add('chosen')
+                    }
+                }) 
+            }
             this.activePhrase.showMatchedLetter(e)
             if(this.checkForWin()) {
                 this.gameOver()
@@ -138,9 +157,11 @@ class Game {
         if (this.checkForWin()) {
             gameOverMessage.innerText = 'You Won!'
             overlay.classList.add('win')
+            overlay.classList.remove('lose')
         } else {
             gameOverMessage.innerText = 'You Lose. Better luck next time!'
             overlay.classList.add('lose')
+            overlay.classList.remove('win')
         }
         const keys = document.querySelectorAll('.key')
         keys.forEach(key => {
@@ -152,7 +173,6 @@ class Game {
         while(phraseList.hasElementChildNodes) {
             phraseList.firstElementChild.remove()
         }
-
         const hearts = document.querySelectorAll('img')
         hearts.forEach(heart => {
             heart.src = 'images/liveHeart.png'
@@ -161,3 +181,6 @@ class Game {
     }
 
 }
+
+
+// game.startGame()
