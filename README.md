@@ -1,5 +1,11 @@
 # treehouse-oop-game-show-app
 
+## Changes Made to General Format
+
+- Changed background colors for the 'start', 'win', and 'lose' overlay
+- Changed background colors of 'chosen' and 'wrong' letter classes for the keys
+- Changed background colors of the 'show' class for letters in the phrase
+
 ## Rules of the Game
 
 - The player’s goal is to guess all the letters in a hidden, random phrase. At the beginning, the player only sees the number of letters and words in the phrase, represented by blank boxes on the screen.

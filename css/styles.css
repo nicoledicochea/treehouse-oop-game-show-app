@@ -4,7 +4,7 @@
 /* Variables */
 
 :root {
-  --color-win: #6bb1b0;
+  --color-win: #578483;
   --color-lose: #D94545;
   --color-start: #5b85b7;
   --color-neutral: #445069;
@@ -145,8 +145,7 @@ button {
 #btn__reset {
   padding: 16px;
   margin: 50px auto;
-  background: #6bb1b0;
-  color: white;
+  background: #fff;
   border-radius: 5px;
   font-size: 20px;
   cursor: pointer;
