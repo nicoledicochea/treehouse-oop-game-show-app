@@ -5,6 +5,7 @@
 - Changed background colors for the 'start', 'win', and 'lose' overlay
 - Changed background colors of 'chosen' and 'wrong' letter classes for the keys
 - Changed background colors of the 'show' class for letters in the phrase
+- Changed background color of the 'Start Game' button
 
 ## Rules of the Game
 
