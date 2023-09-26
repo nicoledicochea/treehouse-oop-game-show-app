@@ -106,14 +106,14 @@ class Game {
     }
 
     removeLife() {
+        const hearts = document.querySelectorAll('img')
+        const lastHeart = hearts[4 - this.missed]
+        lastHeart.src = './images/lostHeart.png'
+        lastHeart.alt = 'Lost Heart Icon'
         this.missed++
         if (this.missed === 5) {
             this.gameOver()
         }
-        const liveHearts = document.querySelectorAll(`[src='images/liveHeart.png']`)
-        const lastHeart = liveHearts[liveHearts.length - 1]
-        lastHeart.src = './images/lostHeart.png'
-        lastHeart.alt = 'Lost Heart Icon'
     }
 
     checkForWin() {
@@ -153,24 +153,11 @@ class Game {
             phraseList.firstElementChild.remove()
         }
 
-        const lostHearts = document.querySelectorAll(`img`)
-        console.log(lostHearts)
-        lostHearts.forEach(heart => {
-            heart.src = './images/liveHeart.png'
+        const hearts = document.querySelectorAll('img')
+        hearts.forEach(heart => {
+            heart.src = 'images/liveHeart.png'
             heart.alt = 'Heart Icon'
-            console.log(heart) 
         })
-
-        // const hearts = document.querySelectorAll('#scoreboard img')
-        // hearts.forEach(heart => {
-        //     heart.src = './images/liveHeart.png'
-        //     heart.alt = 'Heart Icon'
-        //     console.log(heart)
-        // })
-        // console.log(hearts)
     }
 
 }
-
-
-// game.startGame()
