@@ -50,7 +50,11 @@ class Phrase {
     }
 
     checkLetter(e) {
-        return this.phrase.includes((e.target.innerText)) || this.phrase.includes((e.key))
+        if(e.target.tagName === 'BUTTON') {
+            return this.phrase.includes((e.target.innerText))
+        } else {
+            return this.phrase.includes((e.key.toLowerCase()))
+        }
     }
 
     showMatchedLetter(e) {
@@ -62,7 +66,7 @@ class Phrase {
                 guess.classList.add('show')
             })
         } else {
-            guessedLetter = document.querySelectorAll(`.${e.key}`) 
+            guessedLetter = document.querySelectorAll(`.${e.key.toLowerCase()}`) 
             guessedLetter.forEach(guess => {
                 guess.classList.remove('hide')
                 guess.classList.add('show')

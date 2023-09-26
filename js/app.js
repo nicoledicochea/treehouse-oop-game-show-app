@@ -34,9 +34,12 @@ keys.addEventListener('click', (e) => {
 
 addEventListener('keydown', (e) => {
     const keys = document.querySelectorAll('.key')
-    keys.forEach(key => {
-        if (!key.classList.contains('wrong') && key.innerText === e.key) {
-            game.handleInteraction(e)
-        }
-    })
+    const overlay = document.querySelector('#overlay')
+    if(game && overlay.style.display !== 'flex') {
+        keys.forEach(key => {
+            if (!key.classList.contains('wrong') && key.innerText === e.key.toLowerCase()) {
+                game.handleInteraction(e)
+            }
+        })
+    }
 })

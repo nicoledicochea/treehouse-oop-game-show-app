@@ -100,7 +100,7 @@ class Game {
             } else {
                 const keys = document.querySelectorAll(`.key`)
                 keys.forEach(key => {
-                    if (key.innerText === e.key) {
+                    if (key.innerText === e.key.toLowerCase()) {
                         key.classList.add('wrong')
                     }
                 }) 
@@ -112,7 +112,7 @@ class Game {
             } else {
                 const keys = document.querySelectorAll(`.key`)
                 keys.forEach(key => {
-                    if (key.innerText === e.key) {
+                    if (key.innerText === e.key.toLowerCase()) {
                         key.classList.add('chosen')
                     }
                 }) 
@@ -127,8 +127,10 @@ class Game {
     removeLife() {
         const hearts = document.querySelectorAll('img')
         const lastHeart = hearts[4 - this.missed]
-        lastHeart.src = './images/lostHeart.png'
-        lastHeart.alt = 'Lost Heart Icon'
+        if(lastHeart) {
+            lastHeart.src = './images/lostHeart.png'
+            lastHeart.alt = 'Lost Heart Icon'
+        }
         this.missed++
         if (this.missed === 5) {
             this.gameOver()
@@ -164,6 +166,7 @@ class Game {
             overlay.classList.remove('win')
         }
         const keys = document.querySelectorAll('.key')
+        
         keys.forEach(key => {
             key.classList.remove('chosen')
             key.classList.remove('wrong')
@@ -177,6 +180,9 @@ class Game {
         hearts.forEach(heart => {
             heart.src = 'images/liveHeart.png'
             heart.alt = 'Heart Icon'
+        })
+        document.removeEventListener('keydown', (e) => {
+            e.preventDefault()
         })
     }
 
