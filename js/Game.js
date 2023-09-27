@@ -1,69 +1,4 @@
-/* Game.js to define a Game class with methods to control the flow and state of the game */
-
-/* Game Class
-    * constructor
-        * missed - tracks number of missed guesses
-            * initial value = 0
-        * phrases - an arr of 5 Phrase objects to use within the game
-            * no nums, punctuation or other special characters
-        * activePhrase - the Phrase object that is currently in play
-            * initial value = 0
-            * this value will change based on startGame() method
-    * methods
-        * startGame()
-            * hides start screen overlay
-            * calls getRandomPhrase()
-            * sets activePhrase property with the resulting random phrase
-            * calls addPhraseToDisplay() on the activePhrase property
-        * getRandomPhrase()
-            * randomly returns one of the phrases from the phrases array
-        * handleInteraction()
-            * checks to see if button clicked by player matches and then directs game based on correct or incorrect input
-            * disable the selected letter's onscreen keyboard button
-            * if the phrase does NOT include,
-                * add 'wrong' CSS class to keyboard button
-                * call removeLife()
-            * if the phrase DOES include,
-                * add chosen CSS class to keyboard button
-                * call showMatchedLetter() on phrase
-                * call checkForWin()
-                    * if player has won game, 
-                        * call gameOver()
-        * removeLife()
-            * removes a life from the scoreboard
-            * replace liveHeart.png with lostHeart.png
-            * increment the missed property
-            * if there are 5 missed guesses,
-                * call gameOver()
-
-            // select all lis with src liveheart
-            // then choose last li of that section
-            // change src to lostHeart.png
-        
-        * checkForWin()
-            * checks to see if the player guessed all of the letters in the active phrase
-            * 
-            *         // let win = false
-            // const hiddenLetters = document.querySelectorAll('#hide')
-            // for(let i = 0; i < hiddenLetters.length; i++) {
-            //     if (this.activePhrase.includes(letter.innerText)) {
-            //         win = false
-            //         break
-            //     } else {
-            //         win = true
-            //     }
-            // }
-            // return win
-            // return true
-
-        // if no more keys contain any of the letters in phrase, then it's a win
-        * gameOver()
-            * displays original start screen overlay
-            * depending on outcome of game replaces h1 'start' class with:
-            * if win: 'win'
-            * if lose: 'lose'
- */
-
+// create the Game class
 class Game {
     constructor(missed, phrases, activePhrase) {
         this.missed = 0
@@ -82,42 +17,60 @@ class Game {
 
     startGame() {
         const overlay = document.querySelector('#overlay')
+        // hide start screen overlay
         overlay.style.display = 'none'
+        // set activePhrase property using getRandomPhrase()
         this.activePhrase = this.getRandomPhrase()
+        // call addPhraseToDisplay() on activePhrase
         this.activePhrase.addPhraseToDisplay()
     }
-
+    
     getRandomPhrase(){
+        // randomly return a phrase from the phrases array
         return this.phrases[Math.floor(Math.random() * this.phrases.length)]
     }
 
     handleInteraction(e) {
+        const keys = document.querySelectorAll('.key')
+        // disable the onscreen keyboard guess button once selected
+        // prevents user from selecting an already incorrect button
         e.target.disabled = true
-        // }
+        // if the phrase does NOT include the guessed letter
         if(!this.activePhrase.checkLetter(e)) {
+            // if the onscreen keyboard button was used
             if(e.target.tagName === 'BUTTON') {
+                // add 'wrong' class to onscreen keyboard button
                 e.target.classList.add('wrong')
+            // if a physical keyboard was used
             } else {
-                const keys = document.querySelectorAll(`.key`)
                 keys.forEach(key => {
+                    // search for the onscreen key with the same inner text as the physical key
                     if (key.innerText === e.key.toLowerCase()) {
+                        // add 'wrong' class to onscreen keyboard button
                         key.classList.add('wrong')
                     }
                 }) 
             }
             this.removeLife()
+        // if the phrase DOES include the guessed letter
         } else {
+            // if the onscreen keyboard button was used
             if(e.target.tagName === 'BUTTON') {
+                // add 'chosen' class to onscreen keyboard button
                 e.target.classList.add('chosen')
+            // if a physical keyboard was used
             } else {
-                const keys = document.querySelectorAll(`.key`)
                 keys.forEach(key => {
+                    // search for the onscreen key with the same inner text as the physical key
                     if (key.innerText === e.key.toLowerCase()) {
+                        // add 'chosen' class to onscreen keyboard button
                         key.classList.add('chosen')
                     }
                 }) 
             }
+            // call showMatchedLetter() on activePhrase
             this.activePhrase.showMatchedLetter(e)
+            // if checkForWin() is true call gameOver()
             if(this.checkForWin()) {
                 this.gameOver()
             }
@@ -125,37 +78,50 @@ class Game {
     }
 
     removeLife() {
+        // select all heart images
         const hearts = document.querySelectorAll('img')
+        // select the last heart [4 - this.missed]
+            // (ex. 4 - 0 misses) = hearts[4] selects 5th heart
         const lastHeart = hearts[4 - this.missed]
-        if(lastHeart) {
-            lastHeart.src = './images/lostHeart.png'
-            lastHeart.alt = 'Lost Heart Icon'
-        }
+        // replace img src and alt
+        lastHeart.src = './images/lostHeart.png'
+        lastHeart.alt = 'Lost Heart Icon'
+        // increment missed property
         this.missed++
+        // if there are 5 misses call gameOver()
         if (this.missed === 5) {
             this.gameOver()
         }
     }
 
     checkForWin() {
+        // initialize win as true
         let win = true
         const keys = document.querySelectorAll('.key')
         keys.forEach(key => {
-            if (!key.classList.contains('wrong') && !key.classList.contains('chosen')) {
-                if (this.activePhrase.phrase.includes(key.innerText)) {
+            // if any key that has not been guessed (no 'wrong' or 'chosen' class)
+            if (!key.classList.contains('wrong') && !key.classList.contains('chosen') 
+                // and if the activePhrase includes text from a remaining key
+                && this.activePhrase.phrase.includes(key.innerText)) {
+                    // then the player has not won
                     win = false
-                    return win
-                }
             }
         })
+        // return win as a boolean
         return win
     }
 
     gameOver() {
         const overlay = document.querySelector('#overlay')
-        overlay.style.display = 'flex'
-        overlay.classList.remove('start')
         const gameOverMessage = document.querySelector('#game-over-message')
+        const keys = document.querySelectorAll('.key')
+        const phraseList = document.querySelector('#phrase ul')
+        const hearts = document.querySelectorAll('img')
+
+        // display original start screen overlay
+        overlay.style.display = 'flex'
+        // change the overlay and game over message depending on the outcome of the game ('win' or 'lose')
+        overlay.classList.remove('start')
         if (this.checkForWin()) {
             gameOverMessage.innerText = 'You Won!'
             overlay.classList.add('win')
@@ -165,28 +131,24 @@ class Game {
             overlay.classList.add('lose')
             overlay.classList.remove('win')
         }
-        const keys = document.querySelectorAll('.key')
         
+        // enable each onscreen key button and remove 'chosen' or 'wrong' class
         keys.forEach(key => {
             key.classList.remove('chosen')
             key.classList.remove('wrong')
             key.disabled = false
         })
-        const phraseList = document.querySelector('#phrase ul')
+        
+        // remove all li elements from the Phrase parent ul element
         while(phraseList.hasElementChildNodes) {
             phraseList.firstElementChild.remove()
         }
-        const hearts = document.querySelectorAll('img')
+
+        // reset heartimages => change back to liveHeart.png
         hearts.forEach(heart => {
             heart.src = 'images/liveHeart.png'
             heart.alt = 'Heart Icon'
         })
-        document.removeEventListener('keydown', (e) => {
-            e.preventDefault()
-        })
     }
 
 }
-
-
-// game.startGame()

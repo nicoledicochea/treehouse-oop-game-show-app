@@ -1,42 +1,35 @@
-/* app.js to create a new instance of the Game class and add event listeners for the start button and onscreen keyboard buttons */
-
-/* app.js
-    * add click event to 'start game' button
-        * creates new Game object 
-        * starts game by calling startGame()
-    * add click event listener to each onscreen keyboard button
-        * calls handleInteraction() on Game object
-        * 
-        * 
-    * reset gameboard between games
-        * remove all li elements from the Phrase ul element
-        * enable all keyboard buttons
-        * update each key CSS class / remove 'chosen' 'wrong'
-        * reset heartimages => change back to liveHeart.png
- */
-
+// initialize game variable
 let game
 
 const startButton = document.querySelector('#btn__reset')
+const keys = document.querySelector('#qwerty')
 
+// add click event to 'start game' button
 startButton.addEventListener('click', (e) => {
+    // create new Game object 
     game = new Game()
     game.startGame()
 })
 
-const keys = document.querySelector('#qwerty')
-
+// add click event to each onscreen keyboard button
 keys.addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON') {
         game.handleInteraction(e)
     }
 })
 
-addEventListener('keydown', (e) => {
+// add keydown event to each physical keyboard button
+document.addEventListener('keydown', (e) => {
     const keys = document.querySelectorAll('.key')
     const overlay = document.querySelector('#overlay')
+    // only accept keydown interaction 
+        // if the game has been inialized to a new object 
+        // if the overlay is not present
     if(game && overlay.style.display !== 'flex') {
         keys.forEach(key => {
+            // only call handleinteraction()
+                // if the onscreen key does not contain 'wrong' class
+                // if the onscreen key text matches the physical key (case insensitive)
             if (!key.classList.contains('wrong') && key.innerText === e.key.toLowerCase()) {
                 game.handleInteraction(e)
             }
