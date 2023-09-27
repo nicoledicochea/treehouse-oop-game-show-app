@@ -7,9 +7,7 @@ class Phrase {
     addPhraseToDisplay() {
         const phraseList = document.querySelector('#phrase ul')
         const splitPhrase = this.phrase.split('')
-        //initialize html as an empty string
         let html = ''
-        // loop through individual letters of the split phrase
         splitPhrase.forEach(item => {
             // if item is a space 
             if (item === ' ') {
@@ -21,7 +19,7 @@ class Phrase {
                 html += `<li class="hide letter ${item}">${item}</li>`
             }
         })
-        // set ul innerHTML to html variable
+        // set ul innerHTML to html string
         phraseList.innerHTML = html
     }
 
@@ -40,7 +38,6 @@ class Phrase {
     showMatchedLetter(e) {
         // initialize guessedLetter
         let guessedLetter
-        // if the onscreen keyboard button was used
         if(e.target.tagName === 'BUTTON') {
             // select all hidden phrase letters with the same class as the button innerText
             guessedLetter = document.querySelectorAll(`.${e.target.innerText}`) 
@@ -49,7 +46,6 @@ class Phrase {
                 guess.classList.remove('hide')
                 guess.classList.add('show')
             })
-        // if a physical keyboard was used
         } else {
             // select all hidden phrase letters with the same class as e.key (case insensitive)
             guessedLetter = document.querySelectorAll(`.${e.key.toLowerCase()}`) 

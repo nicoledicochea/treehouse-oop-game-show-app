@@ -16,12 +16,10 @@ class Game {
     }
 
     startGame() {
+        // start game by removing the overlay and setting the activePhrase
         const overlay = document.querySelector('#overlay')
-        // hide start screen overlay
         overlay.style.display = 'none'
-        // set activePhrase property using getRandomPhrase()
         this.activePhrase = this.getRandomPhrase()
-        // call addPhraseToDisplay() on activePhrase
         this.activePhrase.addPhraseToDisplay()
     }
     
@@ -35,42 +33,30 @@ class Game {
         // disable the onscreen keyboard guess button once selected
         // prevents user from selecting an already incorrect button
         e.target.disabled = true
-        // if the phrase does NOT include the guessed letter
         if(!this.activePhrase.checkLetter(e)) {
-            // if the onscreen keyboard button was used
             if(e.target.tagName === 'BUTTON') {
-                // add 'wrong' class to onscreen keyboard button
                 e.target.classList.add('wrong')
-            // if a physical keyboard was used
             } else {
                 keys.forEach(key => {
                     // search for the onscreen key with the same inner text as the physical key
                     if (key.innerText === e.key.toLowerCase()) {
-                        // add 'wrong' class to onscreen keyboard button
                         key.classList.add('wrong')
                     }
                 }) 
             }
             this.removeLife()
-        // if the phrase DOES include the guessed letter
         } else {
-            // if the onscreen keyboard button was used
             if(e.target.tagName === 'BUTTON') {
-                // add 'chosen' class to onscreen keyboard button
                 e.target.classList.add('chosen')
-            // if a physical keyboard was used
             } else {
                 keys.forEach(key => {
                     // search for the onscreen key with the same inner text as the physical key
                     if (key.innerText === e.key.toLowerCase()) {
-                        // add 'chosen' class to onscreen keyboard button
                         key.classList.add('chosen')
                     }
                 }) 
             }
-            // call showMatchedLetter() on activePhrase
             this.activePhrase.showMatchedLetter(e)
-            // if checkForWin() is true call gameOver()
             if(this.checkForWin()) {
                 this.gameOver()
             }
@@ -78,7 +64,6 @@ class Game {
     }
 
     removeLife() {
-        // select all heart images
         const hearts = document.querySelectorAll('img')
         // select the last heart [4 - this.missed]
             // (ex. 4 - 0 misses) = hearts[4] selects 5th heart
@@ -95,7 +80,6 @@ class Game {
     }
 
     checkForWin() {
-        // initialize win as true
         let win = true
         const keys = document.querySelectorAll('.key')
         keys.forEach(key => {
@@ -107,7 +91,6 @@ class Game {
                     win = false
             }
         })
-        // return win as a boolean
         return win
     }
 
